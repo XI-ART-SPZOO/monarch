@@ -439,12 +439,6 @@ local function preload(screen)
 	screen.preloading = true
 	if screen.proxy then
 		log("preload() proxy")
-		if M.has_missing_resources(screen.id) then
-			local error_message = ("preload() collection proxy %s is missing resources"):format(tostring(screen.id))
-			log(error_message)
-			screen.preloading = false
-			return false, error_message
-		end
 		screen.wait_for = WAITFOR_PROXY_LOADED
 		msg.post(screen.proxy, MSG_ASYNC_LOAD)
 		coroutine.yield()
@@ -1101,25 +1095,9 @@ function M.preload(id, options, cb)
 	return true -- return true for legacy reasons (before queue existed)
 end
 
---- Check if a screen has missing resources, always returns false for factory
--- @param id (string|hash) - Id of the screen to preload
+--- @deprecated
 function M.has_missing_resources(id)
-	assert(id, "You must provide a screen id")
-	id = tohash(id)
-	assert(screens[id], ("There is no screen registered with id %s"):format(tostring(id)))
-
-	local screen = screens[id]
-	if screen.proxy then
-		if not collectionproxy.missing_resources then
-			-- from defold 1.13.0
-			local resources = collectionproxy.get_resources(screen.proxy)
-			return #resources == 0
-		else
-			-- for backwards compatibility
-			local missing = collectionproxy.missing_resources(screen.proxy)
-			return #missing > 0
-		end
-	end
+	log("has_missing_resources() THIS FUNCTION IS DEPRECATED")
 	return false
 end
 
