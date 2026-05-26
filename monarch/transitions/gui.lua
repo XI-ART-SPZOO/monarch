@@ -26,7 +26,7 @@ function M.window_resized(width, height)
 	BOTTOM = vmath.vector3(0, - HEIGHT, 0)
 end
 
-M.window_resized(tonumber(sys.get_config("display.width")), tonumber(sys.get_config("display.height")))
+M.window_resized(sys.get_config_int("display.width"), sys.get_config_int("display.height"))
 
 
 function M.instant(node, to, easing, duration, delay, cb)
